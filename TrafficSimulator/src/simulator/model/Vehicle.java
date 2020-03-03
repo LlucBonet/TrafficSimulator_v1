@@ -1,63 +1,159 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.json.JSONObject;
 
 
-public class Vehicle extends SimulatedObject {
-	//private List<Junction> itinerary;
-	private int maxVel;
-	private int velActual;
-	private VehicleStatus estado;
-	private Road carretera;
-	private int localizacion;
-	private int gradoContam;
-	private int contamTotal;
-	private int distTotal;
+public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
+	private String _id;
+	private List<Junction> _itinerary;
+	private int _maxSpeed;
+	private int _actualSpeed;
+	private VehicleStatus _vStatus;
+	private Road _road;
+	private int _location;
+	private int _contClass;
+	private int _totalCont;
+	private int _totalDistance;
+	private int _cont;
 	
-	Vehicle(String id, int maxSpeed, int contClass/*,List<Junction> itinerary*/) {
+	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
 		super(id);
-		// TODO Auto-generated constructor stub
-	}
-
-	//Implements SimulatedObject
-	@Override
-	void advance(int time) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public JSONObject report() {
-		return null;
 		
-	}
-
-	void setSpeed(int s) {
+		_totalDistance = 0;
+		_location = 0;
+		_totalCont = 0;
+		_actualSpeed = 0;
+		_cont = 0;
 		
+		_vStatus = VehicleStatus.PENDING;
+		_road = null;
+		_id = id;
+		
+		if(maxSpeed < 0) throw new IllegalArgumentException("Invalid maxSpeed for vehicle " + _id);
+		else _maxSpeed = maxSpeed;
+		if(contClass < 0 || contClass > 10) throw new IllegalArgumentException("Invalid contClass for vehicle " + _id);
+		else _contClass = contClass; 
+		if(itinerary.size() < 2) throw new IllegalArgumentException("Invalid itinerary for vehicle" + _id);
+		else _itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
 	}
 	
-	void setContaminationClass(int c) {
-		if(this.estado == VehicleStatus.TRAVELING) {
-			/*actualiza su localizacion al valor minimo entre la localizacion
-			actual mas la vel actual y la longitud de la carretera por la q 
-			esta circulando*/
-			//this.localizacion = 
+	void moveToNextRoad() throws Exception {//no completo
+		if(this._vStatus == VehicleStatus.PENDING) {
+			//primer cruce del itinerario
+			this._vStatus = VehicleStatus.WAITING;
+			this._actualSpeed = 0;
+			_itinerary.get(_cont);
+			_road.enter(this);
+		}
+		else if(this._vStatus == VehicleStatus.WAITING) { 
+			//siguiente cruce
+			if(this._vStatus != VehicleStatus.ARRIVED) {
+				
+			} 
+		}
+		else throw new IllegalArgumentException("Vehicle"+ _id + "is moving");
+	}
+	
+	//IMPLEMENTS SIMULATED OBJECT//
+	
+	@Override
+	void advance(int time) throws IllegalArgumentException { //completo, revisar ultimo if
+		if(this._vStatus == VehicleStatus.TRAVELING) {
+			int l = this._location;
+			int c;
+			if(l + this._actualSpeed > this._road.getLength()) {
+				this._location = this._road.getLength(); 
+			}
+			else {
+				this._location = l + this._actualSpeed;
+			}
 			
-			/*calcula la contaminacion c producida utilizando la formula c = (lxf)/10, donde
-			f es el factor de contaminacion y l es la distancia recorrida en ese paso de la
-			simulacion, es decir, la nueva localización menos la localizacion previa. Despues
-			annade c a la contaminacion total del vehiculo y tambien annade c al grado de
-			contaminacion de la carretera actual, invocando al metodo correspondiente de
-			la clase Road.*/
+			c = this._contClass * (this._location - l); //c = l*f
+			this._totalCont = c;
+			this._road.addContamination(c);
 			
-			/* si la localización actual (es decir la nueva) es igual a la longitud de la carretera,
-			el vehiculo entra en la cola del cruce correspondiente (llamando a un metodo
-			de la clase Junction). Recuerda que debes modificar el estado del vehiculo*/
-			
+			if(this._location >= this._road.getLength()) { //vehiculo entra en cola del cruce correspondiente
+				this._cont++;
+				this._itinerary.get(this._cont);	
+				this._vStatus = VehicleStatus.WAITING;
+				this._actualSpeed = 0;
+			}
 		}
 	}
-	void moveToNextRoad() {
+
+	@Override
+	public JSONObject report() { //completo
+		JSONObject obj = new JSONObject();
 		
+		obj.put("id", this._id);
+		obj.put("speed", this._actualSpeed);
+		obj.put("distance", this._totalDistance);
+		obj.put("co2", this._totalCont);
+		obj.put("class", this._contClass);
+		obj.put("status", VehicleStatus.valueOf(this._id));
+		if(VehicleStatus.valueOf(this._id) != VehicleStatus.PENDING && VehicleStatus.valueOf(this._id) != VehicleStatus.ARRIVED) {
+			obj.put("road", this._road._id);
+			obj.put("location", this._location);
+		}
+		
+		return obj;
+	}
+	
+	//GETTERS & SETTERS//
+	void setActualSpeed(int s) throws IllegalArgumentException {
+		if(s < 0) throw new IllegalArgumentException("Illegal speed (> 0) for vehicle " + this._id);
+
+		if(s < this._maxSpeed) {
+			this._actualSpeed = s;
+		}
+		else this._actualSpeed = this._maxSpeed;
+		
+	}
+	
+	int getActualSpeed() {
+		return this._actualSpeed;
+	}
+	
+	
+	void setContClass(int c) throws Exception {
+		if(c >= 0 && c <= 10) {
+			this._contClass = c;
+		}
+		else throw new IllegalArgumentException("Illegal ContClass for vehicle" + this._id);	
+	}
+	
+	int getContClass(){
+		return this._contClass;
+	}
+	
+	int getLocation() {
+		return this._location;
+	}
+	
+	Road getRoad() {
+		return this._road;
+	}
+	
+	VehicleStatus getStatus() {
+		return this._vStatus;
+	}
+	
+	List<Junction> getItinerary(){
+		return this._itinerary;
+	}
+
+	@Override
+	public int compareTo(Vehicle o) { //debe estar siempre ordenada por la localización de los vehículos
+		//(orden descendente). Observa que puede haber varios vehículos en la misma
+//		localización. Sin embargo, su orden de llegada a esa localización debe preservarse
+//		en la lista
+		if(this._location > o._location) return -1;
+		if(this._location < o._location) return 1;
+		return 0;
 	}
 	
 }

@@ -18,8 +18,9 @@ public abstract class Event implements Comparable<Event> {
 	@Override
 	public int compareTo(Event o) {
 		// TODO complete
+		//orden basado en _time. De menor a mayor 
 		return 0;
 	}
 
-	abstract void execute(RoadMap map);
+	abstract void execute(RoadMap map) throws Exception; //crea el obj a partir del evento y lo añade al mapa de carreteras
 }

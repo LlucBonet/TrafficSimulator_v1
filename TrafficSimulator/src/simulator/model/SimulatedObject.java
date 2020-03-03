@@ -22,7 +22,7 @@ public abstract class SimulatedObject {
 		return _id;
 	}
 
-	abstract void advance(int time);
+	abstract void advance(int time) throws Exception; //pasamos time por parametro pq hay ojetos q no avanzan en cada iteracion
 
-	abstract public JSONObject report();
+	abstract public JSONObject report(); //en cada paso de la simulacion el controlador llama al report
 }
