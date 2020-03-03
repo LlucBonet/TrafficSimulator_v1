@@ -123,6 +123,10 @@ public abstract class Road extends SimulatedObject {
 		return this._destJunc;
 	}
 	
+	int getContLimit() {
+		return this._contLimit;
+	}
+	
 	Junction getSrc() {
 		return this._srcJunc;
 	}
