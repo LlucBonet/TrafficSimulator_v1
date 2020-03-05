@@ -52,7 +52,7 @@ public abstract class Road extends SimulatedObject {
 	void addContamination(int c) throws IllegalArgumentException {
 		if(c >= 0)
 			this._totalCont += c;
-		else throw new IllegalArgumentException("c < 0 for road " + _id);
+		else throw new IllegalArgumentException("contam < 0 for road " + _id);
 	}
 	
 	//IMPLEMENTS SIMULATED OBJECT//
@@ -67,8 +67,6 @@ public abstract class Road extends SimulatedObject {
 		
 		//ordenar lista de vehiculos por su localizacion
 		Collections.sort(_vehicles);
-		//Collections.sort(List<T> list, Comparator<? superT> c) --> to sort custom obj 
-		
 	}
 
 	@Override
@@ -119,18 +117,18 @@ public abstract class Road extends SimulatedObject {
 		return this._length;
 	}
 	
-	Junction getDest() {
-		return this._destJunc;
-	}
-	
-	int getContLimit() {
-		return this._contLimit;
-	}
-	
 	Junction getSrc() {
 		return this._srcJunc;
 	}
 	
+	Junction getDest() {
+		return this._destJunc;
+	}
+
+	int getContLimit() {
+		return this._contLimit;
+	}
+
 	//ABSTRACT METHODS//
 	abstract void reduceTotalContamination() throws Exception;
 	abstract void updateSpeedLimit();

@@ -48,18 +48,22 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		if(this._vStatus == VehicleStatus.PENDING) {
 			
 			//primer cruce del itinerario
-			//this._actualSpeed = 0;
 			src = _itinerary.get(_cont);
 			_cont++;
 			dest = _itinerary.get(_cont);
 			_road = src.roadTo(dest);
 			
+			this._location = 0;
+			this._actualSpeed = 0;
+
 			_road.enter(this);
 			this._vStatus = VehicleStatus.WAITING;
 
 		}
 		else if(this._vStatus == VehicleStatus.WAITING) { 
 		//siguiente cruce
+//			this._location = 0;
+//			this._actualSpeed = 0;
 			_cont++;
 			_road.exit(this);
 			src = _road.getDest();
@@ -121,6 +125,16 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		return obj;
 	}
 	
+	@Override
+	public int compareTo(Vehicle o) { //debe estar siempre ordenada por la localización de los vehículos
+		//(orden descendente). Observa que puede haber varios vehículos en la misma
+//		localización. Sin embargo, su orden de llegada a esa localización debe preservarse
+//		en la lista
+		if(this._location > o._location) return -1;
+		if(this._location < o._location) return 1;
+		return 0;
+	}
+	
 	//GETTERS & SETTERS//
 	void setActualSpeed(int s) throws IllegalArgumentException {
 		if(s < 0) throw new IllegalArgumentException("Illegal speed (> 0) for vehicle " + this._id);
@@ -129,13 +143,11 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 			this._actualSpeed = s;
 		}
 		else this._actualSpeed = this._maxSpeed;
-		
 	}
 	
 	int getActualSpeed() {
 		return this._actualSpeed;
 	}
-	
 	
 	void setContClass(int c) throws Exception {
 		if(c >= 0 && c <= 10) {
@@ -163,15 +175,4 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 	List<Junction> getItinerary(){
 		return this._itinerary;
 	}
-
-	@Override
-	public int compareTo(Vehicle o) { //debe estar siempre ordenada por la localización de los vehículos
-		//(orden descendente). Observa que puede haber varios vehículos en la misma
-//		localización. Sin embargo, su orden de llegada a esa localización debe preservarse
-//		en la lista
-		if(this._location > o._location) return -1;
-		if(this._location < o._location) return 1;
-		return 0;
-	}
-	
 }
