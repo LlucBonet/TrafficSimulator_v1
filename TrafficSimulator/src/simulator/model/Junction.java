@@ -63,12 +63,11 @@ public class Junction extends SimulatedObject {
 	
 	Road roadTo(Junction j) { //ver si se puede hacer mas eficiente
 		Road r = null;
-		int i = 0;
-		boolean found = false;
-		while(i < _inRoad.size() && !found) {
-			r = _inRoad.get(i);
-			if(r.getSrc() == this && r.getDest() == j)
-				found = true;
+		for(Map.Entry<Junction, Road> entry : _outRoad.entrySet()) {
+			if(entry.getValue().getSrc() == this && entry.getKey() == j) {
+				r = entry.getValue();
+				return r;
+			}
 		}
 		return r;
 	}
