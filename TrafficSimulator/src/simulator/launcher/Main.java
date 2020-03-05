@@ -14,14 +14,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import simulator.control.Controller;
-import simulator.factories.Builder;
-import simulator.factories.BuilderBasedFactory;
-import simulator.factories.Factory;
-import simulator.factories.MostCrowdedStrategyBuilder;
-import simulator.factories.MoveAllStrategyBuilder;
-import simulator.factories.MoveFirstStrategyBuilder;
-import simulator.factories.NewJunctionEventBuilder;
-import simulator.factories.RoundRobinStrategyBuilder;
+
+import simulator.factories.*;
+
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchStrategy;

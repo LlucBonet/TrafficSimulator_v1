@@ -39,14 +39,20 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		else _contClass = contClass; 
 		if(itinerary.size() < 2) throw new IllegalArgumentException("Invalid itinerary for vehicle" + _id);
 		else _itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
+	   
 	}
 	
 	void moveToNextRoad() throws Exception {//no completo
 		if(this._vStatus == VehicleStatus.PENDING) {
+			Junction src;
+			Junction dest;
 			//primer cruce del itinerario
 			this._vStatus = VehicleStatus.WAITING;
 			this._actualSpeed = 0;
-			_itinerary.get(_cont);
+			src = _itinerary.get(_cont);
+			_cont++;
+			dest = _itinerary.get(_cont);
+			
 			_road.enter(this);
 		}
 		else if(this._vStatus == VehicleStatus.WAITING) { 
