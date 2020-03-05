@@ -42,24 +42,36 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 	   
 	}
 	
-	void moveToNextRoad() throws Exception {//no completo
+	void moveToNextRoad() throws Exception {
+		Junction src;
+		Junction dest;
 		if(this._vStatus == VehicleStatus.PENDING) {
-			Junction src;
-			Junction dest;
+			
 			//primer cruce del itinerario
-			this._vStatus = VehicleStatus.WAITING;
-			this._actualSpeed = 0;
+			//this._actualSpeed = 0;
 			src = _itinerary.get(_cont);
 			_cont++;
 			dest = _itinerary.get(_cont);
+			_road = src.roadTo(dest);
 			
 			_road.enter(this);
+			this._vStatus = VehicleStatus.WAITING;
+
 		}
 		else if(this._vStatus == VehicleStatus.WAITING) { 
-			//siguiente cruce
-			if(this._vStatus != VehicleStatus.ARRIVED) {
-				
-			} 
+		//siguiente cruce
+			_cont++;
+			_road.exit(this);
+			src = _road.getDest();
+			dest = _itinerary.get(_cont);
+			if(dest == null) {
+				this._vStatus = VehicleStatus.ARRIVED;
+			}
+			else{
+				_road = src.roadTo(dest);
+				_road.enter(this);
+			}
+		
 		}
 		else throw new IllegalArgumentException("Vehicle"+ _id + "is moving");
 	}
