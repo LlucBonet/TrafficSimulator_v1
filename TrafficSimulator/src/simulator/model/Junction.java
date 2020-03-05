@@ -61,8 +61,16 @@ public class Junction extends SimulatedObject {
 		
 	}
 	
-	Road roadTo(Junction j) {
-		return null;
+	Road roadTo(Junction j) { //ver si se puede hacer mas eficiente
+		Road r = null;
+		int i = 0;
+		boolean found = false;
+		while(i < _inRoad.size() && !found) {
+			r = _inRoad.get(i);
+			if(r.getSrc() == this && r.getDest() == j)
+				found = true;
+		}
+		return r;
 	}
 	
 	//IMPLEMENTS SIMULATED OBJECT//
