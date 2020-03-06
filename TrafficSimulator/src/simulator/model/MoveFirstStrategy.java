@@ -1,7 +1,6 @@
 package simulator.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MoveFirstStrategy implements DequeuingStrategy {
@@ -12,10 +11,10 @@ public class MoveFirstStrategy implements DequeuingStrategy {
 
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		// TODO Auto-generated method stub
 		//List<Vehicle> vl = Collections.unmodifiableList(new ArrayList<>(q));
-		
-		return null;
+		List<Vehicle> vl = new ArrayList<Vehicle>();
+		vl.add(q.get(0));
+		return vl;
 	}
 
 }
