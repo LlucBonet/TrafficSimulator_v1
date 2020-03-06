@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MoveAllStrategy implements DequeuingStrategy {
@@ -10,8 +12,8 @@ public class MoveAllStrategy implements DequeuingStrategy {
 
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Vehicle> vl = Collections.unmodifiableList(new ArrayList<Vehicle>(q));
+		return vl;
 	}
 
 }
