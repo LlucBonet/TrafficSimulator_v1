@@ -32,6 +32,10 @@ public class Junction extends SimulatedObject {
 		else _dqs = dqStrategy;
 		
 		if(xCoor < 0 || yCoor < 0) throw new IllegalArgumentException("Invalid value for the coordinates of junction" + _id); 
+		else {
+			_xCoor = xCoor;
+			_yCoor = yCoor;
+		}
 		
 		_greenLightIndex = -1;
 		_lastSwitchingTime = 0;
@@ -41,23 +45,39 @@ public class Junction extends SimulatedObject {
 		_queueByRoad = new HashMap<>();
 	}
 
-	
-	
-	void addIncomingRoad(Road r) {
-		if(!this.equals(r.getDest())) throw new IllegalArgumentException("addIncomingRoad to junction "+ _id + "...");
+	void addIncomingRoad(Road r) throws IllegalArgumentException {
+		if(!this.equals(r.getDest())) throw new IllegalArgumentException("addIncomingRoad to junction "+ _id);
 		
-		List<Vehicle> q = new LinkedList<Vehicle>();
+		List<Vehicle> q = new ArrayList<Vehicle>(); //puede ser LinkedList
 		_inRoad.add(r);
 		_queues.add(q);
 		_queueByRoad.put(r, q);
 	}
 	
-	void addOutGoingRoad(Road r) {
-		
+	void addOutGoingRoad(Road r) throws IllegalArgumentException {
+		//TODO mirar la segunda excepcion 
+		Junction j = r.getDest();
+		for(Map.Entry<Junction, Road> entry : _outRoad.entrySet()) {
+			if(entry.getValue().getSrc() == this && entry.getKey() == j) {
+				throw new IllegalArgumentException("addOutGoingRoad from junction" + _id + ". This road already exists");
+			}
+		}
+		//if(!(r.getSrc() == this)) throw new IllegalArgumentException("addOutgoingRoad from juction " + _id + " road doesn't belong to this juction");
+		_outRoad.put(j, r);
 	}
 	
 	void enter(Vehicle v) {
 		Road r = v.getRoad();
+		int pos = _queues.size();
+		int i = 0;
+		boolean found = false;
+		while (i < _queues.size() && !found){
+			if(r == _queues.get(i)) {
+				pos = i;
+				found = true;
+			}
+		}
+		_queues.get(pos).add(v);
 		
 	}
 	
@@ -75,18 +95,32 @@ public class Junction extends SimulatedObject {
 	//IMPLEMENTS SIMULATED OBJECT//
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
+		// TODO 
+		
+		
 
 	}
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
 		JSONObject obj = new JSONObject();
+		JSONObject obj2 = new JSONObject();
+
 		obj.put("id", _id);
-//		obj.put("green", );
-//		obj.put("queues", );
+		if(_greenLightIndex == -1) {
+			obj.put("green", "none");
+		}
+		else {
+			//TODO no se seguro si se usa _inRoad u otra lista
+			obj.put("green", _inRoad.get(_greenLightIndex).getId());
+		}
 		
+		for(int i = 0; i < _queues.size(); i++) {
+			obj2.put("road", _inRoad.get(i).getId());
+			obj2.put("vehicle", _inRoad.get(i).getVehicleList());
+		}		
+		obj.put("queues", obj2);
+
 		return obj;
 	}
 	
