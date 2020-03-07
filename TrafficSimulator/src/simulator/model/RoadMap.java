@@ -1,54 +1,108 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RoadMap {
-	private List<Junction> JunctionList;
-	private List<Road> RoadList;
-	private List<Vehicle> VechicleList;
-	private Map<String, Junction> JunctionMap;
-	private Map<String, Road> RoadMap;
-	private Map<String, Vehicle> VechicleMap;
+	private List<Junction> _junctionList;
+	private List<Road> _roadList;
+	private List<Vehicle> _vehicleList;
+	private Map<String, Junction> _junctionMap;
+	private Map<String, Road> _roadMap;
+	private Map<String, Vehicle> _vehicleMap;
 	
 	RoadMap(){
+		_junctionList = new ArrayList<>();
+		_roadList = new ArrayList<>();
+		_vehicleList = new ArrayList<>();
+		_junctionMap = new HashMap<>();
+		_roadMap = new HashMap<>();
+		_vehicleMap = new HashMap<>();
 		
 	}
 	
 	void addJunction(Junction j) {
-		
+		for(int i = 0; i < _junctionList.size(); i++) {
+			if(_junctionList.get(i).getId() == j.getId())
+				throw new IllegalArgumentException("AddJuction() in RoadMap: juction " + j.getId() +" already exists in _juctionList.");
+		}
+		_junctionList.add(j);
+		_junctionMap.put(j.getId(), j);
 	}
 	
 	void addRoad(Road r) {
+		boolean src = false;
+		boolean dest = false;
+		for(int i = 0; i < _roadList.size(); i++) {
+			if(_roadList.get(i).getId() == r.getId())
+				throw new IllegalArgumentException("AddRoad() in RoadMap: road " + r.getId() +" already exists in _roadList.");
+		}
+		for(Map.Entry<String, Junction> entry : _junctionMap.entrySet()) {
+			if(r.getSrc() == entry.getValue())
+				src = true;
+			else if(r.getDest() == entry.getValue())
+				dest = true;
+		}
+		if(!src || !dest)
+			throw new IllegalArgumentException("AddRoad() in RoadMap: dest juction or source junction from road " + r.getId() + "don't exist in _juctionMap");
 		
+		_roadList.add(r);
+		_roadMap.put(r.getId(), r);
 	}
 	
 	void addVechicle(Vehicle v) {
+		for(int i = 0; i < _vehicleList.size(); i++) {
+			if(_vehicleList.get(i).getId() == v.getId())
+				throw new IllegalArgumentException("AddRoad() in RoadMap: vehicle " + v.getId() +" already exists in _vehicleList.");
+		}
+		//TODO falta excepcion (ii)
+		//existen carreteras que conecten los cruces consecutivos de su itinerario
+	
 		
+		_vehicleList.add(v);
+		_vehicleMap.put(v.getId(), v);
 	}
 	
 	public Junction getJunction(String id) {
+		for(int i = 0; i < _junctionList.size(); i++) {
+			if(_junctionList.get(i).getId() == id) {
+				return _junctionList.get(i);
+			}
+		}
 		return null;
 	}
 	
 	public Road getRoad(String id) {
+		for(int i = 0; i < _roadList.size(); i++) {
+			if(_roadList.get(i).getId() == id) {
+				return _roadList.get(i);
+			}
+		}
 		return null;
 	}
 	
 	public Vehicle getVehicle(String id) {
+		for(int i = 0; i < _vehicleList.size(); i++) {
+			if(_vehicleList.get(i).getId() == id) {
+				return _vehicleList.get(i);
+			}
+		}
 		return null;
 	}
 	
 	public List<Junction> getJunctions(){
-		return JunctionList;
+		return Collections.unmodifiableList(new ArrayList<>(_junctionList));
 	}
 	
 	public List<Road> getRoads(){
-		return RoadList;
+		return Collections.unmodifiableList(new ArrayList<>(_roadList));
 	}
 	
 	public List<Vehicle> getVehicles(){
-		return VechicleList;
+		return Collections.unmodifiableList(new ArrayList<>(_vehicleList));
 	}
 	
 	void reset() {
