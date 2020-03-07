@@ -10,9 +10,9 @@ public abstract class NewRoadEvent extends Event {
 	@Override
 	void execute(RoadMap map) throws Exception {
 		// TODO Auto-generated method stub
-
+		createRoadObject(map);
 	}
 	
-	abstract Road createRoadObject();
+	abstract Road createRoadObject(RoadMap map) throws Exception; //he añadido RoadMap map 
 
 }
