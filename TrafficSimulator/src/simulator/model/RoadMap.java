@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class RoadMap {
 	private List<Junction> _junctionList;
 	private List<Road> _roadList;
@@ -66,6 +68,7 @@ public class RoadMap {
 		_vehicleMap.put(v.getId(), v);
 	}
 	
+	//GETTERS & SETTERS//
 	public Junction getJunction(String id) {
 		for(int i = 0; i < _junctionList.size(); i++) {
 			if(_junctionList.get(i).getId() == id) {
@@ -106,6 +109,33 @@ public class RoadMap {
 	}
 	
 	void reset() {
+		_junctionList.clear();
+		 _roadList.clear();
+		 _vehicleList.clear();
+		 _junctionMap.clear();
+		_roadMap.clear();
+		_vehicleMap.clear();
+	}
+	
+	public JSONObject report() {
+		JSONObject obj = new JSONObject();
+		JSONObject objJ = null;
+		JSONObject objR = null;
+		JSONObject objV = null;
+		for(int i = 0; i < _junctionList.size(); i++) {
+			objJ = _junctionList.get(i).report();
+		}
+		obj.put("juctions", objJ);
 		
+		for(int i = 0; i < _roadList.size(); i++) {
+			objR = _roadList.get(i).report();
+		}
+		obj.put("road", objR);
+		
+		for(int i = 0; i < _vehicleList.size(); i++) {
+			objV = _vehicleList.get(i).report();
+		}
+		obj.put("vehicles", objV);
+		return obj;
 	}
 }
