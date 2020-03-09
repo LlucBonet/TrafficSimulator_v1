@@ -5,7 +5,7 @@ import java.util.List;
 import simulator.misc.Pair;
 
 public class SetWeatherEvent extends Event {
-	protected int _time;
+	
 	protected List<Pair<String, Weather>> _ws;
 	
 	public SetWeatherEvent(int time, List<Pair<String, Weather>> ws) {
@@ -14,7 +14,6 @@ public class SetWeatherEvent extends Event {
 		if(ws == null) 
 			throw new IllegalArgumentException ("ws == null in SetWeatherEvent class");
 		_ws = ws;
-		_time = time;
 	}
 
 	@Override
