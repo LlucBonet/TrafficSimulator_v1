@@ -5,16 +5,25 @@ import java.util.List;
 import simulator.misc.Pair;
 
 public class SetContClassEvent extends Event {
+	
+	protected List<Pair<String, Integer>> _cs;
 
 	public SetContClassEvent(int time, List<Pair<String, Integer>> cs) {
 		super(time);
 		// TODO Auto-generated constructor stub
+		_cs = cs;
 	}
 
 	@Override
-	void execute(RoadMap map) {
+	void execute(RoadMap map) throws Exception {
 		// TODO Auto-generated method stub
 
+		for(Pair<String, Integer> c : _cs) {
+			Vehicle v = map.getVehicle(c.getFirst());
+			if(v == null) 
+				throw new Exception("vehicle " + c.getFirst() + " doesn't exist in map");
+			v.setContClass(c.getSecond());
+		}
 	}
 
 }
