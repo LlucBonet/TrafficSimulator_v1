@@ -5,16 +5,26 @@ import java.util.List;
 import simulator.misc.Pair;
 
 public class SetWeatherEvent extends Event {
-
+	protected int _time;
+	protected List<Pair<String, Weather>> _ws;
+	
 	public SetWeatherEvent(int time, List<Pair<String, Weather>> ws) {
 		super(time);
-		// TODO Auto-generated constructor stub
+		
+		if(ws == null) 
+			throw new IllegalArgumentException ("ws == null in SetWeatherEvent class");
+		_ws = ws;
+		_time = time;
 	}
 
 	@Override
-	void execute(RoadMap map) {
-		// TODO Auto-generated method stub
-
+	void execute(RoadMap map) throws Exception {
+		for(Pair<String, Weather> w : _ws) {
+			Road r = map.getRoad(w.getFirst());
+			if(r == null) 
+				throw new Exception("road " + w.getFirst() + " doesn't exist in map");
+			r.setWeather(w.getSecond());
+		}
 	}
 
 }
