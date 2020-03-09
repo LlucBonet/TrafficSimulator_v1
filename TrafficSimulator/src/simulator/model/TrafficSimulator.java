@@ -4,31 +4,58 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import simulator.misc.SortedArrayList;
+
 public class TrafficSimulator {
 
-	private RoadMap rMap;
-	private List<Event> eventList;
-	private int simulatedTime;
+	protected RoadMap _map;
+	protected List<Event> _eventList;
+	protected int _simulatedTime;
 	
 	
 	public TrafficSimulator() {
-		// TODO Auto-generated constructor stub
+		_map = new RoadMap();
+		_eventList = new SortedArrayList<Event>();
+		_simulatedTime = 0;
 	}
 	
 	public void addEvent(Event e) {
-		
+		_eventList.add(e);
 	}
 	
-	public void advance() {
+	public void advance() throws Exception {
 		
+		_simulatedTime++; //paso 1
+		
+		for(int i = 0; i < _eventList.size(); i++) {
+			if(_eventList.get(i).getTime() == _simulatedTime) {
+				_eventList.get(i).execute(_map);
+				_eventList.remove(i);
+			}
+		}// paso 2
+		
+		for(int i = 0; i < _map.getJunctions().size(); i++) {
+			_map.getJunctions().get(i).advance(_simulatedTime);
+		}//paso 3
+		
+		for(int i = 0; i < _map.getRoads().size(); i++) {
+			_map.getRoads().get(i).advance(_simulatedTime);
+		}//paso 4
 	}
 	
 	public void reset() {
-		
+		_map.reset();
+		_eventList.clear();
+		_simulatedTime = 0;
 	}
 	
 	public JSONObject report() {
-		return null;
+		JSONObject obj = new JSONObject();
+		JSONObject obj2 = _map.report();
+		
+		obj.put("time", _simulatedTime);
+		obj.put("state", obj2);
+		
+		return obj;
 	}
-
 }
