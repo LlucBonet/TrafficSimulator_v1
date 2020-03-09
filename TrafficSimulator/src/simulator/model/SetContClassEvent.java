@@ -10,7 +10,8 @@ public class SetContClassEvent extends Event {
 
 	public SetContClassEvent(int time, List<Pair<String, Integer>> cs) {
 		super(time);
-		// TODO Auto-generated constructor stub
+		if(_cs == null) 
+			throw new IllegalArgumentException("cs == null in SetContClassEvent class");
 		_cs = cs;
 	}
 
