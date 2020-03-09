@@ -2,7 +2,6 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,11 +93,20 @@ public class Junction extends SimulatedObject {
 	
 	//IMPLEMENTS SIMULATED OBJECT//
 	@Override
-	void advance(int time) {
+	void advance(int time) throws Exception {
 		// TODO 
 		
+		List<Vehicle> vl = _dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex)));
+		for(int i = 0; i < vl.size(); i++) {
+			vl.get(i).moveToNextRoad();
+			_dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex))).remove(vl.get(i));
+		}
 		
-
+		int indice = _lss.chooseNextGreen(_inRoad, _queues, _greenLightIndex, _lastSwitchingTime, time);
+		if(indice != _greenLightIndex) {
+			_greenLightIndex = indice;
+			_lastSwitchingTime = time;
+		}
 	}
 
 	@Override
@@ -133,6 +141,4 @@ public class Junction extends SimulatedObject {
 	int get_yCoor() {
 		return this._yCoor;
 	}
-	
-
 }
