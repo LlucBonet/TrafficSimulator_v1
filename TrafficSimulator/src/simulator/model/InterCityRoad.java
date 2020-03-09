@@ -7,7 +7,7 @@ public class InterCityRoad extends Road {
 
 	InterCityRoad(String id, Junction srcJunc, Junction destJunct, int maxSpeed, int contLimit, Weather weather, int length) throws Exception {
 		super(id, srcJunc, destJunct, maxSpeed, contLimit, length, weather);
-		// TODO Auto-generated constructor stub
+
 		this.contLimit = contLimit;
 		this.maxSpeed = maxSpeed;
 		this.weather = weather;

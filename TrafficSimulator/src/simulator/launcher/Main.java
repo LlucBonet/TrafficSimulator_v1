@@ -106,17 +106,17 @@ public class Main {
 	private static void initFactories() {
 
 		// TODO complete this method to initialize _eventsFactory
-//		List<Builder<LightSwitchStrategy>> lsbs = new ArrayList<>();
-//		lsbs.add(new RoundRobinStrategyBuilder());
-//		lsbs.add(new MostCrowdedStrategyBuilder());
-//		Factory<LightSwitchStrategy> lssFactory = new BuilderBasedFactory<> (lsbs);
-//		
-//		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
-//		dqbs.add( new MoveFirstStrategyBuilder() );
-//		dqbs.add( new MoveAllStrategyBuilder() );
-//		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(
-//		dqbs);
-//		
+		List<Builder<LightSwitchStrategy>> lsbs = new ArrayList<>();
+		lsbs.add(new RoundRobinStrategyBuilder("round_robin_lss"));
+		lsbs.add(new MostCrowdedStrategyBuilder("most_crowded_lss"));
+		Factory<LightSwitchStrategy> lssFactory = new BuilderBasedFactory<> (lsbs);
+		
+		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
+		dqbs.add( new MoveFirstStrategyBuilder("move_first_dqs") );
+		dqbs.add( new MoveAllStrategyBuilder("most_all_dqs") );
+		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(
+		dqbs);
+		
 //		List<Builder<Event>> ebs = new ArrayList<>();
 //		ebs.add( new NewJunctionEventBuilder(lssFactory,dqsFactory) );
 //		ebs.add( new NewCityRoadEvent() );
