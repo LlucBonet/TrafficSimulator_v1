@@ -13,12 +13,10 @@ public class NewVehicleEventBuilder extends Builder<Event> {
 
 	public NewVehicleEventBuilder(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
 		int time = data.getInt("time");
 		String id = data.getString("id");
 		int maxSpeed = data.getInt("maxspeed");

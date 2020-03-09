@@ -3,17 +3,21 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.Event;
+import simulator.model.NewCityRoadEvent;
+import simulator.model.NewInterCityRoadEvent;
 
 public class NewCityRoadEventBuilder extends NewRoadEventBuilder {
 
 	public NewCityRoadEventBuilder(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override
 	protected Event createTheRoad() {
-		// TODO Auto-generated method stub
+//		if(this._type == "new_city_road")
+//			return new NewCityRoadEvent();
+//		else return new NewInterCityRoadEvent();
 		return null;
 	}
 
