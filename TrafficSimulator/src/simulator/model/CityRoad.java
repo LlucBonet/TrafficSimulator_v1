@@ -4,7 +4,6 @@ public class CityRoad extends Road {
 
 	public CityRoad(String id, Junction srcJunc, Junction destJunct, int maxSpeed, int contLimit, int length, Weather weather) throws Exception {
 		super(id, srcJunc, destJunct, maxSpeed, contLimit, length, weather);
-		// TODO Auto-generated constructor stub
 	}
 
 	

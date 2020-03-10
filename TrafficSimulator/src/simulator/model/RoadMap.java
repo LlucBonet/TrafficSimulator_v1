@@ -122,6 +122,7 @@ public class RoadMap {
 		JSONObject objJ = null;
 		JSONObject objR = null;
 		JSONObject objV = null;
+		
 		for(int i = 0; i < _junctionList.size(); i++) {
 			objJ = _junctionList.get(i).report();
 		}

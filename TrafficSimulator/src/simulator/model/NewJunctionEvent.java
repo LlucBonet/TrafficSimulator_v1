@@ -10,7 +10,6 @@ public class NewJunctionEvent extends Event {
 
 	public NewJunctionEvent(int time, String id, LightSwitchStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 		super(time);
-		// TODO Auto-generated constructor stub
 		_id = id;
 		_lss = lsStrategy;
 		_dqs = dqStrategy;
@@ -20,7 +19,6 @@ public class NewJunctionEvent extends Event {
 
 	@Override
 	void execute(RoadMap map) {
-		// TODO Auto-generated method stub
 		map.addJunction(new Junction(_id, _lss, _dqs, _xCoor, _yCoor));
 	}
 

@@ -7,7 +7,6 @@ public class RoundRobinStrategy implements LightSwitchStrategy {
 	private int timeSlot;
 	
 	public RoundRobinStrategy(int timeSlot) {
-		// TODO Auto-generated constructor stub
 		this.timeSlot = timeSlot;
 	}
 
