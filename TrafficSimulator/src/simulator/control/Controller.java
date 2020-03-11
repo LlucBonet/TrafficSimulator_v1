@@ -14,10 +14,17 @@ import simulator.model.TrafficSimulator;
 public class Controller {
 
 	private TrafficSimulator _trafficSimulator;
-	private Factory<Event> _eventsFactory;
+	private Factory<Event> _eventFactory;
 	
 	public Controller(TrafficSimulator sim, Factory<Event> eventFactory) {
-		
+		if(sim == null)
+			throw new IllegalArgumentException("sim == null in Controller constructor");
+		else 
+			_trafficSimulator = sim;
+		if(eventFactory == null)
+			throw new IllegalArgumentException("eventFactory == null in Controller constructor");
+		else 
+			_eventFactory = eventFactory;
 	}
 
 	public void loadEvents(InputStream in) {
@@ -25,12 +32,18 @@ public class Controller {
 		JSONArray events = jo.getJSONArray("events");
 		
 		for(int i = 0; i < events.length(); i++) {
-			_trafficSimulator.addEvent(_eventsFactory.createInstance(events.getJSONObject(i)));
+			_trafficSimulator.addEvent(_eventFactory.createInstance(events.getJSONObject(i)));
 		}
 	}
 	
-	public void run(int n, OutputStream out) {
-		
+	public void run(int n, OutputStream out) throws Exception {
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
+		for(int i = 0; i < n; i++) {
+			_trafficSimulator.advance();
+			arr.put(_trafficSimulator.report());
+		}
+		obj.put("state", arr);
 	}
 	
 	public void reset() {
