@@ -2,6 +2,7 @@ package simulator.control;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ public class Controller {
 	}
 	
 	public void run(int n, OutputStream out) throws Exception {
+		PrintStream p = new PrintStream(out);
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
 		for(int i = 0; i < n; i++) {
@@ -44,6 +46,7 @@ public class Controller {
 			arr.put(_trafficSimulator.report());
 		}
 		obj.put("state", arr);
+		p.print(obj);
 	}
 	
 	public void reset() {
