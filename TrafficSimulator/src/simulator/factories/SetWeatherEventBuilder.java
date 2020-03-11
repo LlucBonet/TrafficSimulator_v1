@@ -21,13 +21,16 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 	protected Event createTheInstance(JSONObject data) {
 		int time = data.getInt("time");
 		List<Pair<String, Weather>> ws = new ArrayList<>();
-		JSONArray infoArray = new JSONArray(data.getJSONArray("info"));
-		String w;
+		JSONArray infoArray = new JSONArray();
+		infoArray = data.getJSONArray("info");
+		String w, r;
+		Weather weather;
+		Pair<String, Weather> p;
 		for(int i = 0; i < infoArray.length(); i++) {
 			w = infoArray.getJSONObject(i).getString("weather").toUpperCase();
-			Weather weather = Weather.valueOf(w);
-			String r = infoArray.getJSONObject(i).getString("road");
-			Pair<String, Weather> p = new Pair<String, Weather>(r, weather);
+			weather = Weather.valueOf(w);
+			r = infoArray.getJSONObject(i).getString("road");
+			p = new Pair<String, Weather>(r, weather);
 			ws.add(p);
 		}
 		
