@@ -12,9 +12,8 @@ import simulator.model.SetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event> {
 
-	SetContClassEventBuilder(String type) {
+	public SetContClassEventBuilder(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
