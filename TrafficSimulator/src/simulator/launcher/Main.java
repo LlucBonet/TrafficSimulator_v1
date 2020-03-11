@@ -20,8 +20,6 @@ import simulator.factories.*;
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchStrategy;
-import simulator.model.NewCityRoadEvent;
-import simulator.model.NewInterCityRoadEvent;
 import simulator.model.TrafficSimulator;
 
 public class Main {
@@ -105,28 +103,31 @@ public class Main {
 	}
 	private static void initFactories() {
 
-		// TODO complete this method to initialize _eventsFactory
 		List<Builder<LightSwitchStrategy>> lsbs = new ArrayList<>();
 		lsbs.add(new RoundRobinStrategyBuilder("round_robin_lss"));
 		lsbs.add(new MostCrowdedStrategyBuilder("most_crowded_lss"));
-		Factory<LightSwitchStrategy> lssFactory = new BuilderBasedFactory<> (lsbs);
 		
+		Factory<LightSwitchStrategy> lssFactory = new BuilderBasedFactory<> (lsbs);
+
 		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
 		dqbs.add( new MoveFirstStrategyBuilder("move_first_dqs") );
 		dqbs.add( new MoveAllStrategyBuilder("most_all_dqs") );
-		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(
-		dqbs);
 		
-//		List<Builder<Event>> ebs = new ArrayList<>();
-//		ebs.add( new NewJunctionEventBuilder(lssFactory,dqsFactory) );
-//		ebs.add( new NewCityRoadEvent() );
-//		ebs.add( new NewInterCityRoadEvent() );
-//		// ...
-//		Factory<Event> eventsFactory = new BuilderBasedFactory<>(ebs);
+		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs);
+		
+		List<Builder<Event>> ebs = new ArrayList<>();
+		ebs.add( new NewJunctionEventBuilder("new_junction", lssFactory,dqsFactory) );
+		ebs.add( new NewCityRoadEventBuilder("new_city_road") );
+		ebs.add( new NewInterCityRoadEventBuilder("new_inter_city_road") );
+		ebs.add( new NewVehicleEventBuilder("new_vehicle"));
+		ebs.add(new SetWeatherEventBuilder("set_weather"));
+		ebs.add( new SetContClassEventBuilder("set_cont_class"));
+
+		_eventsFactory = new BuilderBasedFactory<>(ebs);
 	}
 
-	private static void startBatchMode() throws IOException {
-		// TODO complete this method to start the simulation
+	private static void startBatchMode() throws Exception {
+
 		InputStream in = new FileInputStream(new File(_inFile));
 		OutputStream out = _outFile == null ? System.out : new FileOutputStream(new File(_outFile));
 		TrafficSimulator tf = new TrafficSimulator();
@@ -137,7 +138,7 @@ public class Main {
 		System.out.println("Done");
 	}
 
-	private static void start(String[] args) throws IOException {
+	private static void start(String[] args) throws Exception {
 		initFactories();
 		parseArgs(args);
 		startBatchMode();
