@@ -1,10 +1,10 @@
 package simulator.factories;
 
-import org.json.JSONObject;
 
 import simulator.model.Event;
 import simulator.model.NewCityRoadEvent;
-import simulator.model.NewInterCityRoadEvent;
+import simulator.model.Weather;
+
 
 public class NewCityRoadEventBuilder extends NewRoadEventBuilder {
 
@@ -14,11 +14,11 @@ public class NewCityRoadEventBuilder extends NewRoadEventBuilder {
 	}
 
 	@Override
-	protected Event createTheRoad() {
-//		if(this._type == "new_city_road")
-//			return new NewCityRoadEvent();
-//		else return new NewInterCityRoadEvent();
-		return null;
+	protected Event createTheRoad(int time, String id, String src, String dest, int length, int co2limit, int maxspeed,
+			Weather weather) {
+
+		return new NewCityRoadEvent(maxspeed, dest, dest, dest, maxspeed, maxspeed, maxspeed, weather);
+		
 	}
 
 }

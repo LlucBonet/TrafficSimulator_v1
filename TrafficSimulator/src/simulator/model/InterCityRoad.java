@@ -15,7 +15,6 @@ public class InterCityRoad extends Road {
 
 	@Override
 	void reduceTotalContamination() {
-		// TODO Auto-generated method stub
 		int x = 0, tc;
 		
 		if(this.weather == Weather.SUNNY) 
