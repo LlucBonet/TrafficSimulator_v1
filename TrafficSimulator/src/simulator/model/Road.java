@@ -39,13 +39,13 @@ public abstract class Road extends SimulatedObject {
 		
 	}
 	
-	void enter(Vehicle v) throws IllegalArgumentException {
+	void enter(Vehicle v) throws IllegalArgumentException { //añade el vehiculo a la lista de vehiculos 
 		if(v.getLocation() == 0 && v.getActualSpeed() == 0)
 			_vehicles.add(v);
 		else throw new IllegalArgumentException("Location or actual speed != 0 for vehicle " + v.getId());
 	}
 	
-	void exit(Vehicle v) {
+	void exit(Vehicle v) { //elimina el vehiculo de la lista de vehiculos
 		_vehicles.remove(v);
 	}
 	
