@@ -58,7 +58,8 @@ public abstract class Road extends SimulatedObject {
 	//IMPLEMENTS SIMULATED OBJECT//
 	@Override
 	void advance(int time) throws Exception {
-		reduceTotalContamination();
+		if(this._totalCont > 2)
+			reduceTotalContamination();
 		updateSpeedLimit();
 		for(Vehicle v : _vehicles) {
 			v.setActualSpeed(calculateVehicleSpeed(v));
