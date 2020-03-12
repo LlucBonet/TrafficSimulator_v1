@@ -27,11 +27,13 @@ public class TrafficSimulator {
 		
 		_simulatedTime++; //paso 1
 		
-		for(int i = 0; i < _eventList.size(); i++) {
-			if(_eventList.get(i).getTime() == _simulatedTime) {
-				_eventList.get(i).execute(_map);
-				_eventList.remove(i);
+		int j = 0;
+		while (j < _eventList.size()) {
+			if(_eventList.get(j).getTime() == _simulatedTime) {
+				_eventList.get(j).execute(_map);
+				_eventList.remove(j);
 			}
+			else j++;
 		}// paso 2
 		
 		for(int i = 0; i < _map.getJunctions().size(); i++) {
