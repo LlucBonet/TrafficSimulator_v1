@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Junction extends SimulatedObject {
 
 	private List<Road> _inRoad; //lista de todas las carreteras q entran al cruce. El cruce es su destino
 	private Map<Junction,Road> _outRoad;
-	private List<List<Vehicle>> _queues;
+	private List<List<Vehicle>> _queues; //lista de los vehiculos esperando en el cruce
 	private Map<Road,List<Vehicle>> _queueByRoad;
 	private int _greenLightIndex;
 	private int _lastSwitchingTime;
@@ -94,40 +95,44 @@ public class Junction extends SimulatedObject {
 	//IMPLEMENTS SIMULATED OBJECT//
 	@Override
 	void advance(int time) throws Exception {
-		// TODO 
-		
-		List<Vehicle> vl = _dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex)));
-		for(int i = 0; i < vl.size(); i++) {
-			vl.get(i).moveToNextRoad();
-			_dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex))).remove(vl.get(i));
+	
+		if(_greenLightIndex != -1) {
+			//Calcula la lista de vehiculos que deben avanzar a su siguiente carretera
+			List<Vehicle> vl = _dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex)));
+			for(int i = 0; i < vl.size(); i++) {
+				vl.get(i).moveToNextRoad();
+				_dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex))).remove(vl.get(i));
+			}
 		}
-		
+		//Calcula el indice de la siguiente carretera a la que hay que poner su semaforo en verde
 		int indice = _lss.chooseNextGreen(_inRoad, _queues, _greenLightIndex, _lastSwitchingTime, time);
 		if(indice != _greenLightIndex) {
 			_greenLightIndex = indice;
 			_lastSwitchingTime = time;
 		}
+		
 	}
 
 	@Override
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
-		JSONObject obj2 = new JSONObject();
+		JSONArray arr = new JSONArray();
 
 		obj.put("id", _id);
 		if(_greenLightIndex == -1) {
 			obj.put("green", "none");
 		}
 		else {
-			//TODO no se seguro si se usa _inRoad u otra lista
 			obj.put("green", _inRoad.get(_greenLightIndex).getId());
 		}
 		
 		for(int i = 0; i < _queues.size(); i++) {
+			JSONObject obj2 = new JSONObject();
 			obj2.put("road", _inRoad.get(i).getId());
 			obj2.put("vehicle", _inRoad.get(i).getVehicleList());
+			arr.put(obj2);
 		}		
-		obj.put("queues", obj2);
+		obj.put("queues", arr);
 
 		return obj;
 	}
