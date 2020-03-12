@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RoadMap {
@@ -122,24 +123,25 @@ public class RoadMap {
 	
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
-		JSONObject objJ = null;
-		JSONObject objR = null;
-		JSONObject objV = null;
+		JSONArray arrJ = new JSONArray();
+		JSONArray arrR = new JSONArray();
+		JSONArray arrV = new JSONArray();
+
 		
 		for(int i = 0; i < _junctionList.size(); i++) {
-			objJ = _junctionList.get(i).report();
+			arrJ.put(_junctionList.get(i).report());
 		}
-		obj.put("juctions", objJ);
+		obj.put("juctions", arrJ);
 		
 		for(int i = 0; i < _roadList.size(); i++) {
-			objR = _roadList.get(i).report();
+			arrR.put(_roadList.get(i).report());
 		}
-		obj.put("road", objR);
+		obj.put("road", arrR);
 		
 		for(int i = 0; i < _vehicleList.size(); i++) {
-			objV = _vehicleList.get(i).report();
+			arrV.put(_vehicleList.get(i).report());
 		}
-		obj.put("vehicles", objV);
+		obj.put("vehicles", arrV);
 		return obj;
 	}
 }
