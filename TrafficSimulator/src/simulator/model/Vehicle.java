@@ -46,7 +46,6 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		Junction src;
 		Junction dest;
 		if(this._vStatus == VehicleStatus.PENDING) {
-			
 			//primer cruce del itinerario
 			src = _itinerary.get(_cont);
 			_cont++;
@@ -57,7 +56,7 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 			this._actualSpeed = 0;
 
 			_road.enter(this);
-			this._vStatus = VehicleStatus.WAITING;
+			this._vStatus = VehicleStatus.TRAVELING;
 
 		}
 		else if(this._vStatus == VehicleStatus.WAITING) { 
@@ -74,6 +73,7 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 			else{
 				_road = src.roadTo(dest);
 				_road.enter(this);
+				this._vStatus = VehicleStatus.TRAVELING;
 			}
 		
 		}
@@ -126,9 +126,9 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 	}
 	
 	@Override
-	public int compareTo(Vehicle o) { //debe estar siempre ordenada por la localización de los vehículos
-		//(orden descendente). Observa que puede haber varios vehículos en la misma
-//		localización. Sin embargo, su orden de llegada a esa localización debe preservarse
+	public int compareTo(Vehicle o) { //debe estar siempre ordenada por la localizaciï¿½n de los vehï¿½culos
+		//(orden descendente). Observa que puede haber varios vehï¿½culos en la misma
+//		localizaciï¿½n. Sin embargo, su orden de llegada a esa localizaciï¿½n debe preservarse
 //		en la lista
 		if(this._location > o._location) return -1;
 		if(this._location < o._location) return 1;
