@@ -24,7 +24,7 @@ public class NewCityRoadEvent extends NewRoadEvent {
 
 	@Override
 	Road createRoadObject(RoadMap map) throws Exception {
-		return new CityRoad(_id, map.getJunction(_srcJ), map.getJunction(_destJ), _length, _co2Limit, _maxSpeed, _weather);
+		return new CityRoad(_id, map.getJunction(_srcJ), map.getJunction(_destJ), _maxSpeed, _co2Limit, _length, _weather);
 	}
 	
 	
