@@ -17,7 +17,7 @@ public class NewCityRoadEventBuilder extends NewRoadEventBuilder {
 	protected Event createTheRoad(int time, String id, String src, String dest, int length, int co2limit, int maxspeed,
 			Weather weather) {
 
-		return new NewCityRoadEvent(maxspeed, dest, dest, dest, maxspeed, maxspeed, maxspeed, weather);
+		return new NewCityRoadEvent(time, id, src, dest, length, co2limit, maxspeed, weather);
 		
 	}
 
