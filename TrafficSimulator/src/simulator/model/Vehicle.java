@@ -104,6 +104,7 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 				this._vStatus = VehicleStatus.WAITING;
 				this._actualSpeed = 0;
 			}
+			this._totalDistance += this._location;
 		}
 	}
 
@@ -116,8 +117,8 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		obj.put("distance", this._totalDistance);
 		obj.put("co2", this._totalCont);
 		obj.put("class", this._contClass);
-		obj.put("status", VehicleStatus.valueOf(this._id));
-		if(VehicleStatus.valueOf(this._id) != VehicleStatus.PENDING && VehicleStatus.valueOf(this._id) != VehicleStatus.ARRIVED) {
+		obj.put("status", this._vStatus);
+		if(this._vStatus != VehicleStatus.PENDING && this._vStatus != VehicleStatus.ARRIVED) {
 			obj.put("road", this._road._id);
 			obj.put("location", this._location);
 		}
