@@ -45,7 +45,7 @@ public class Controller {
 			_trafficSimulator.advance();
 			arr.put(_trafficSimulator.report());
 		}
-		obj.put("state", arr);
+		obj.put("states", arr);
 		p.print(obj);
 	}
 	

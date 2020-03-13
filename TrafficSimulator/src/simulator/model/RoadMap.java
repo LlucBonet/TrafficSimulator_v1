@@ -131,12 +131,12 @@ public class RoadMap {
 		for(int i = 0; i < _junctionList.size(); i++) {
 			arrJ.put(_junctionList.get(i).report());
 		}
-		obj.put("juctions", arrJ);
+		obj.put("junctions", arrJ);
 		
 		for(int i = 0; i < _roadList.size(); i++) {
 			arrR.put(_roadList.get(i).report());
 		}
-		obj.put("road", arrR);
+		obj.put("roads", arrR);
 		
 		for(int i = 0; i < _vehicleList.size(); i++) {
 			arrV.put(_vehicleList.get(i).report());
