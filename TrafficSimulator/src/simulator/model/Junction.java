@@ -117,6 +117,7 @@ public class Junction extends SimulatedObject {
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
+		
 
 		obj.put("id", _id);
 		if(_greenLightIndex == -1) {
@@ -128,8 +129,12 @@ public class Junction extends SimulatedObject {
 		
 		for(int i = 0; i < _queues.size(); i++) {
 			JSONObject obj2 = new JSONObject();
+			JSONArray arr2 = new JSONArray();
 			obj2.put("road", _inRoad.get(i).getId());
-			obj2.put("vehicle", _inRoad.get(i).getVehicleList());
+			for(int j = 0; j < _inRoad.get(i).getVehicleList().size(); j++) {
+				arr2.put(_inRoad.get(i).getVehicleList().get(j).getId());
+			}
+			obj2.put("vehicle", arr2);
 			arr.put(obj2);
 		}		
 		obj.put("queues", arr);
