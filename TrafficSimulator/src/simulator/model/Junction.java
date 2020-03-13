@@ -48,21 +48,21 @@ public class Junction extends SimulatedObject {
 	void addIncomingRoad(Road r) throws IllegalArgumentException {
 		if(!this.equals(r.getDest())) throw new IllegalArgumentException("addIncomingRoad to junction "+ _id);
 		
-		List<Vehicle> q = new ArrayList<Vehicle>(); //puede ser LinkedList
+		List<Vehicle> q = new ArrayList<Vehicle>(); 
 		_inRoad.add(r);
 		_queues.add(q);
 		_queueByRoad.put(r, q);
 	}
 	
 	void addOutGoingRoad(Road r) throws IllegalArgumentException {
-		//TODO mirar la segunda excepcion 
 		Junction j = r.getDest();
 		for(Map.Entry<Junction, Road> entry : _outRoad.entrySet()) {
 			if(entry.getValue().getSrc() == this && entry.getKey() == j) {
 				throw new IllegalArgumentException("addOutGoingRoad from junction" + _id + ". This road already exists");
 			}
 		}
-		//if(!(r.getSrc() == this)) throw new IllegalArgumentException("addOutgoingRoad from juction " + _id + " road doesn't belong to this juction");
+		if(!(r.getSrc() == this)) 
+			throw new IllegalArgumentException("addOutgoingRoad from juction " + _id + ": road doesn't belong to this juction");
 		_outRoad.put(j, r);
 	}
 	
@@ -134,7 +134,7 @@ public class Junction extends SimulatedObject {
 			for(int j = 0; j < _inRoad.get(i).getVehicleList().size(); j++) {
 				arr2.put(_inRoad.get(i).getVehicleList().get(j).getId());
 			}
-			obj2.put("vehicle", arr2);
+			obj2.put("vehicles", arr2);
 			arr.put(obj2);
 		}		
 		obj.put("queues", arr);
