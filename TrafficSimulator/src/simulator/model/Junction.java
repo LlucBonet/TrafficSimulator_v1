@@ -127,14 +127,11 @@ public class Junction extends SimulatedObject {
 			obj.put("green", _inRoad.get(_greenLightIndex).getId());
 		}
 		
-		for(int i = 0; i < _queues.size(); i++) {
+		for(int i = 0; i < _inRoad.size(); i++) {
 			JSONObject obj2 = new JSONObject();
-			JSONArray arr2 = new JSONArray();
 			obj2.put("road", _inRoad.get(i).getId());
-			for(int j = 0; j < _inRoad.get(i).getVehicleList().size(); j++) {
-				arr2.put(_inRoad.get(i).getVehicleList().get(j).getId());
-			}
-			obj2.put("vehicles", arr2);
+			
+			obj2.put("vehicles", _queueByRoad.get(_inRoad.get(i)));
 			arr.put(obj2);
 		}		
 		obj.put("queues", arr);
