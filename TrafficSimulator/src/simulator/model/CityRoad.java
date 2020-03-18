@@ -21,8 +21,8 @@ public class CityRoad extends Road {
 	}
 
 	@Override
-	int calculateVehicleSpeed(Vehicle c) {
-		return(int)(((11.0-c.getContClass()) / 11.0) * this.getSpeedLimit());
+	int calculateVehicleSpeed(Vehicle c) { 
+		return (int) Math.ceil(((11.0-c.getContClass()) / 11.0) * this.getSpeedLimit());
 	}
 
 	@Override
