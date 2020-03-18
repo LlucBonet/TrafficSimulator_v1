@@ -63,7 +63,8 @@ public abstract class Road extends SimulatedObject {
 			reduceTotalContamination();
 		updateSpeedLimit();
 		for(Vehicle v : _vehicles) {
-			v.setActualSpeed(calculateVehicleSpeed(v));
+			if(v.getStatus() == VehicleStatus.TRAVELING)
+				v.setActualSpeed(calculateVehicleSpeed(v));
 			v.advance(time);
 		}
 		
