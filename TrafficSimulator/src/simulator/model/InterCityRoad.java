@@ -15,7 +15,8 @@ public class InterCityRoad extends Road {
 
 	@Override
 	void reduceTotalContamination() {
-		int x = 0, tc;
+		int x = 0; 
+		int c;
 		
 		if(this.weather == Weather.SUNNY) 
 			x = 2;
@@ -28,8 +29,9 @@ public class InterCityRoad extends Road {
 		else if(this.weather == Weather.STORM)
 			x = 20;
 		
-		tc = (int)((100 - x)/100) * getTotalCont();
-		setTotalCont(tc);
+		c = (int) (((100.0 - x)/100.0) * getTotalCont());
+	
+		setTotalCont(c);
 	}
 
 	@Override
