@@ -46,7 +46,8 @@ public class Controller {
 			arr.put(_trafficSimulator.report());
 		}
 		obj.put("states", arr);
-		p.print(obj);
+		p.println(obj.toString());
+		p.close();
 	}
 	
 	public void reset() {
