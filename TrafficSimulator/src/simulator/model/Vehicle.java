@@ -61,50 +61,52 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle> {
 		}
 		else if(this._vStatus == VehicleStatus.WAITING) { 
 		//siguiente cruce
-//			this._location = 0;
-//			this._actualSpeed = 0;
 			_cont++;
 			_road.exit(this);
-			src = _road.getDest();
-			dest = _itinerary.get(_cont);
-			if(dest == null) {
+			_location = 0;
+			//_actualSpeed = 0;
+			if(_cont >=  _itinerary.size()) {
 				this._vStatus = VehicleStatus.ARRIVED;
 			}
 			else{
+				src = _road.getDest();
+				dest = _itinerary.get(_cont);
 				_road = src.roadTo(dest);
 				_road.enter(this);
 				this._vStatus = VehicleStatus.TRAVELING;
 			}
 		
 		}
-		else throw new IllegalArgumentException("Vehicle"+ _id + "is moving");
+		else 
+			throw new IllegalArgumentException("Vehicle "+ _id + " is moving or has arrived.");
 	}
 	
 	//IMPLEMENTS SIMULATED OBJECT//
 	
 	@Override
-	void advance(int time) throws IllegalArgumentException { //completo, revisar ultimo if
+	void advance(int time) throws IllegalArgumentException { 
 		if(this._vStatus == VehicleStatus.TRAVELING) {
 			int l = this._location;
 			int c;
-			if(l + this._actualSpeed > this._road.getLength()) {
+			if(this._location + this._actualSpeed > this._road.getLength()) {
 				this._location = this._road.getLength(); 
 			}
 			else {
-				this._location = l + this._actualSpeed;
+				this._location += this._actualSpeed;
 			}
 			
 			c = this._contClass * (this._location - l); //c = l*f
-			this._totalCont = c;
+			this._totalCont += c;
 			this._road.addContamination(c);
 			
 			if(this._location >= this._road.getLength()) { //vehiculo entra en cola del cruce correspondiente
-				this._cont++;
-				this._itinerary.get(this._cont);	
+				Junction j = this._road.getDest();
+				j.enter(this);
+				//this._cont++;
 				this._vStatus = VehicleStatus.WAITING;
 				this._actualSpeed = 0;
 			}
-			this._totalDistance += this._location;
+			this._totalDistance += (this._location - l);
 		}
 	}
 
