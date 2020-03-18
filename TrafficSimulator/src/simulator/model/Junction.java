@@ -24,14 +24,16 @@ public class Junction extends SimulatedObject {
 			int xCoor, int yCoor){
 		super(id);
 
-		if(lsStrategy == null) throw new IllegalArgumentException(
-				 "Invalid value for the light switching strategy of junction " + _id);
+		if(lsStrategy == null) 
+			throw new IllegalArgumentException("Invalid value for the light switching strategy of junction " + _id);
 		else _lss = lsStrategy;
 		
-		if(dqStrategy == null) throw new IllegalArgumentException("Invalid value for the dequeuing strategy of junction" + _id);
+		if(dqStrategy == null) 
+			throw new IllegalArgumentException("Invalid value for the dequeuing strategy of junction" + _id);
 		else _dqs = dqStrategy;
 		
-		if(xCoor < 0 || yCoor < 0) throw new IllegalArgumentException("Invalid value for the coordinates of junction" + _id); 
+		if(xCoor < 0 || yCoor < 0) 
+			throw new IllegalArgumentException("Invalid value for the coordinates of junction" + _id); 
 		else {
 			_xCoor = xCoor;
 			_yCoor = yCoor;
@@ -46,7 +48,8 @@ public class Junction extends SimulatedObject {
 	}
 
 	void addIncomingRoad(Road r) throws IllegalArgumentException {
-		if(!this.equals(r.getDest())) throw new IllegalArgumentException("addIncomingRoad to junction "+ _id);
+		if(!this.equals(r.getDest())) 
+			throw new IllegalArgumentException("addIncomingRoad to junction "+ _id);
 		
 		List<Vehicle> q = new ArrayList<Vehicle>(); 
 		_inRoad.add(r);
@@ -68,17 +71,19 @@ public class Junction extends SimulatedObject {
 	
 	void enter(Vehicle v) {
 		Road r = v.getRoad();
-		int pos = _queues.size();
-		int i = 0;
-		boolean found = false;
-		while (i < _queues.size() && !found){
-			if(r == _queues.get(i)) {
-				pos = i;
-				found = true;
-			}
-		}
-		_queues.get(pos).add(v);
+		//int pos = _queues.size();
+		//int i = _queues.size() - 1;
 		
+		for(Map.Entry<Road, List<Vehicle>> entry : _queueByRoad.entrySet()) {
+			if(entry.getKey().equals(r)) {
+				//pos = i;
+				entry.getValue().add(v);
+				//_queues.get(i).add(v);
+				break;
+			}
+		//	i--;
+		}
+	//	_queues.get(pos).add(v);
 	}
 	
 	Road roadTo(Junction j) { 
@@ -101,7 +106,8 @@ public class Junction extends SimulatedObject {
 			List<Vehicle> vl = _dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex)));
 			for(int i = 0; i < vl.size(); i++) {
 				vl.get(i).moveToNextRoad();
-				_dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex))).remove(vl.get(i));
+				//_dqs.dequeue(_queueByRoad.get(_inRoad.get(_greenLightIndex))).remove(vl.get(i));
+				_queueByRoad.get(_inRoad.get(_greenLightIndex)).remove(vl.get(i));
 			}
 		}
 		//Calcula el indice de la siguiente carretera a la que hay que poner su semaforo en verde
@@ -110,7 +116,6 @@ public class Junction extends SimulatedObject {
 			_greenLightIndex = indice;
 			_lastSwitchingTime = time;
 		}
-		
 	}
 
 	@Override
@@ -129,9 +134,14 @@ public class Junction extends SimulatedObject {
 		
 		for(int i = 0; i < _inRoad.size(); i++) {
 			JSONObject obj2 = new JSONObject();
-			obj2.put("road", _inRoad.get(i).getId());
-			
-			obj2.put("vehicles", _queueByRoad.get(_inRoad.get(i)));
+			List<String> v = new ArrayList<>();
+ 			obj2.put("road", _inRoad.get(i).getId());
+ 			
+ 			for(int j = 0; j < _queueByRoad.get(_inRoad.get(i)).size(); j++) {
+ 				v.add(_queueByRoad.get(_inRoad.get(i)).get(j).getId());
+	
+ 			}
+			obj2.put("vehicles", v);
 			arr.put(obj2);
 		}		
 		obj.put("queues", arr);
