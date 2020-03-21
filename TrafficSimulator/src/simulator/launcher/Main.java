@@ -102,19 +102,21 @@ public class Main {
 		}
 	}
 	private static void initFactories() {
-
+		//Factoria LightSwitchStrategy
 		List<Builder<LightSwitchStrategy>> lsbs = new ArrayList<>();
 		lsbs.add(new RoundRobinStrategyBuilder("round_robin_lss"));
 		lsbs.add(new MostCrowdedStrategyBuilder("most_crowded_lss"));
 		
 		Factory<LightSwitchStrategy> lssFactory = new BuilderBasedFactory<> (lsbs);
 
+		//Factoria DequeuingStrategy
 		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
 		dqbs.add( new MoveFirstStrategyBuilder("move_first_dqs") );
 		dqbs.add( new MoveAllStrategyBuilder("most_all_dqs") );
 		
 		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs);
 		
+		//Factoria de Eventos
 		List<Builder<Event>> ebs = new ArrayList<>();
 		ebs.add( new NewJunctionEventBuilder("new_junction", lssFactory,dqsFactory) );
 		ebs.add( new NewCityRoadEventBuilder("new_city_road") );

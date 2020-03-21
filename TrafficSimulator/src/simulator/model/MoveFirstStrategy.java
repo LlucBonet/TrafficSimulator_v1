@@ -9,7 +9,7 @@ public class MoveFirstStrategy implements DequeuingStrategy {
 	}
 
 	@Override
-	public List<Vehicle> dequeue(List<Vehicle> q) {
+	public List<Vehicle> dequeue(List<Vehicle> q) { //devuelve una lista con el primer elemento de q
 		List<Vehicle> vl = new ArrayList<Vehicle>();	
 		if(!(q.isEmpty())) 
 			vl.add(q.get(0));

@@ -17,7 +17,7 @@ public class RoundRobinStrategyBuilder extends Builder<LightSwitchStrategy> {
 		if(data.has("timeslot")) {
 			return new RoundRobinStrategy(data.getInt("timeslot"));
 		}
-		return new RoundRobinStrategy(1);
+		return new RoundRobinStrategy(1); // 1 es el default timeslot
 	}
 
 }

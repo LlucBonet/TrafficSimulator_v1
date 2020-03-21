@@ -5,7 +5,6 @@ import java.util.List;
 public class MostCrowdedStrategy implements LightSwitchStrategy {
 	private int timeSlot;
 	public MostCrowdedStrategy(int timeSlot) {
-		// TODO Auto-generated constructor stub
 		this.timeSlot = timeSlot;
 	}
 

@@ -17,7 +17,7 @@ public class SetContClassEvent extends Event {
 
 	@Override
 	void execute(RoadMap map) throws Exception {
-		// TODO Auto-generated method stub
+	
 
 		for(Pair<String, Integer> c : _cs) {
 			Vehicle v = map.getVehicle(c.getFirst());

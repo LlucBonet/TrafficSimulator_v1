@@ -16,7 +16,7 @@ public abstract class Event implements Comparable<Event> {
 	}
 
 	@Override
-	public int compareTo(Event o) {
+	public int compareTo(Event o) { // no puedo comprobar que funcione
 		// TODO complete the method to compare events according to their _time
 		//orden basado en _time. De menor a mayor 
 		if(this._time < o._time) return -1;
@@ -24,5 +24,5 @@ public abstract class Event implements Comparable<Event> {
 		return 0;
 	}
 
-	abstract void execute(RoadMap map) throws Exception; //crea el obj a partir del evento y lo añade al mapa de carreteras
+	abstract void execute(RoadMap map) throws Exception; //crea el obj a partir del evento y lo anyade al mapa de carreteras
 }

@@ -16,7 +16,7 @@ public class MostCrowdedStrategyBuilder extends Builder<LightSwitchStrategy> {
 		if(data.has("timeslot")) {
 			return new MostCrowdedStrategy(data.getInt("timeslot"));
 		}
-		return new MostCrowdedStrategy(1);
+		return new MostCrowdedStrategy(1); // 1 es el default timeslot
 	}
 
 }

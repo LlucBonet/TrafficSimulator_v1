@@ -62,11 +62,13 @@ public class RoadMap {
 	void addVechicle(Vehicle v) {
 		for(int i = 0; i < _vehicleList.size(); i++) {
 			if(_vehicleList.get(i).getId() == v.getId())
-				throw new IllegalArgumentException("AddRoad() in RoadMap: vehicle " + v.getId() +" already exists in _vehicleList.");
+				throw new IllegalArgumentException("AddVehicle() in RoadMap: vehicle " + v.getId() +" already exists in _vehicleList.");
 		}
-		//TODO falta excepcion (ii)
-		//existen carreteras que conecten los cruces consecutivos de su itinerario
-	
+		for(int i = 0; i < v.getItinerary().size()- 1; i++) {
+			if(v.getItinerary().get(i).roadTo(v.getItinerary().get(i+1)) == null)
+				throw new IllegalArgumentException("AddVehicle() in RoadMap: there aren't any roads connecting junctions " + v.getItinerary().get(i) + 
+						" and " + v.getItinerary().get(i+1));
+		}
 		
 		_vehicleList.add(v);
 		_vehicleMap.put(v.getId(), v);

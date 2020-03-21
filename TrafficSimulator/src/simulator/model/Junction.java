@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class Junction extends SimulatedObject {
 
 	private List<Road> _inRoad; //lista de todas las carreteras q entran al cruce. El cruce es su destino
-	private Map<Junction,Road> _outRoad;
+	private Map<Junction,Road> _outRoad; //mapa de carreteras que salen de este cruce y entran en el cruce Junction del mapa
 	private List<List<Vehicle>> _queues; //lista de los vehiculos esperando en el cruce
 	private Map<Road,List<Vehicle>> _queueByRoad;
 	private int _greenLightIndex;
@@ -48,8 +48,8 @@ public class Junction extends SimulatedObject {
 	}
 
 	void addIncomingRoad(Road r) throws IllegalArgumentException {
-		if(!this.equals(r.getDest())) 
-			throw new IllegalArgumentException("addIncomingRoad to junction "+ _id);
+		if(!this.equals(r.getDest())) //si el destino de r no coincide con este cruce
+			throw new IllegalArgumentException("addIncomingRoad() to junction "+ _id + ". This road's dest is not this junction");
 		
 		List<Vehicle> q = new ArrayList<Vehicle>(); 
 		_inRoad.add(r);
@@ -71,19 +71,13 @@ public class Junction extends SimulatedObject {
 	
 	void enter(Vehicle v) {
 		Road r = v.getRoad();
-		//int pos = _queues.size();
-		//int i = _queues.size() - 1;
-		
+	
 		for(Map.Entry<Road, List<Vehicle>> entry : _queueByRoad.entrySet()) {
 			if(entry.getKey().equals(r)) {
-				//pos = i;
 				entry.getValue().add(v);
-				//_queues.get(i).add(v);
 				break;
 			}
-		//	i--;
 		}
-	//	_queues.get(pos).add(v);
 	}
 	
 	Road roadTo(Junction j) { 

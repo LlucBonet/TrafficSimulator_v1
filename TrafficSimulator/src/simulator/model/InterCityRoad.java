@@ -35,7 +35,7 @@ public class InterCityRoad extends Road {
 	}
 
 	@Override
-	int calculateVehicleSpeed(Vehicle c) {//Pone la vel del vehiculo a la vel limite de la carretera
+	int calculateVehicleSpeed(Vehicle c) {//Devuelve la velocidad limite de la carretera
 		if(this.getWeatherCond() == Weather.STORM) {
 			return (int)(this.getSpeedLimit()*0.8);
 		}
