@@ -6,7 +6,6 @@ import java.util.List;
 public class MoveFirstStrategy implements DequeuingStrategy {
 
 	public MoveFirstStrategy() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
