@@ -76,30 +76,16 @@ public class RoadMap {
 	
 	//GETTERS & SETTERS//
 	public Junction getJunction(String id) {
-		for(int i = 0; i < _junctionList.size(); i++) {
-			if(_junctionList.get(i).getId().equals(id)) {
-				return _junctionList.get(i);
-			}
-		}
-		return null;
+		return _junctionMap.get(id);
+		
 	}
 	
 	public Road getRoad(String id) {
-		for(int i = 0; i < _roadList.size(); i++) {
-			if(_roadList.get(i).getId().equals(id)) {
-				return _roadList.get(i);
-			}
-		}
-		return null;
+		return _roadMap.get(id);
 	}
 	
 	public Vehicle getVehicle(String id) {
-		for(int i = 0; i < _vehicleList.size(); i++) {
-			if(_vehicleList.get(i).getId().equals(id)) {
-				return _vehicleList.get(i);
-			}
-		}
-		return null;
+		return _vehicleMap.get(id);
 	}
 	
 	public List<Junction> getJunctions(){
